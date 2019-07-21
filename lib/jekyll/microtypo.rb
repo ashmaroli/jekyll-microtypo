@@ -38,18 +38,26 @@ module Jekyll
       index -= 1
       head, tail, flag = QUEUE[index]
 
-      input.split(head).each do |item|
-        item = item.to_s
-        end_items = item.split(tail)
+      if input.include?(head)
+        input.split(head).each do |item|
+          item = item.to_s
 
-        if flag
-          bucket << head << end_items[0] << tail
-        else
-          bucket << end_items[0]
+          if item.include?(tail)
+            end_items = item.split(tail)
+
+            if flag
+              bucket << head << end_items[0] << tail
+            else
+              bucket << end_items[0]
+            end
+
+            item = end_items.last
+          end
+
+          recursive_parser(item, locale, bucket, index)
         end
-
-        item = end_items.last
-        recursive_parser(item, locale, bucket, index)
+      else
+        recursive_parser(+input, locale, bucket, index)
       end
     end
 
