@@ -40,19 +40,15 @@ module Jekyll
 
       input.split(head).each do |item|
         item = item.to_s
+        end_items = item.split(tail)
 
-        if item.include?(tail)
-          end_items = item.split(tail)
-
-          if flag
-            bucket << head << end_items[0] << tail
-          else
-            bucket << end_items[0]
-          end
-
-          item = end_items.last
+        if flag
+          bucket << head << end_items[0] << tail
+        else
+          bucket << end_items[0]
         end
 
+        item = end_items.last
         recursive_parser(item, locale, bucket, index)
       end
     end
